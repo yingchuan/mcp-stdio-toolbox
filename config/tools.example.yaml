@@ -1,0 +1,89 @@
+server:
+  name: "mcp-stdio-toolbox"
+  version: "0.1.0"
+  default_timeout_sec: 30
+  max_output_bytes: 1048576
+
+tools:
+  - name: "echo"
+    description: "Echo text to stdout"
+    command: "echo"
+    args: []
+    input_schema:
+      type: object
+      properties:
+        text:
+          type: string
+          description: "Text to echo"
+      required: ["text"]
+      arg_mapping:
+        - ["text"]
+
+  - name: "grep_file"
+    description: "Search for patterns in a file using grep"
+    command: "grep"
+    args: ["-n"]
+    timeout_sec: 60
+    input_schema:
+      type: object
+      properties:
+        pattern:
+          type: string
+          description: "Pattern to search for"
+        file:
+          type: string
+          description: "File to search in"
+      required: ["pattern", "file"]
+      arg_mapping:
+        - ["pattern"]
+        - ["file"]
+
+  - name: "ls_directory"
+    description: "List directory contents"
+    command: "ls"
+    args: ["-la"]
+    input_schema:
+      type: object
+      properties:
+        directory:
+          type: string
+          description: "Directory to list (optional, defaults to current)"
+          default: "."
+      arg_mapping:
+        - ["directory"]
+
+  - name: "curl_get"
+    description: "Make HTTP GET request"
+    command: "curl"
+    args: ["-s", "-L"]
+    timeout_sec: 120
+    input_schema:
+      type: object
+      properties:
+        url:
+          type: string
+          description: "URL to fetch"
+        headers:
+          type: array
+          items:
+            type: string
+          description: "Additional headers (format: 'Header: Value')"
+      required: ["url"]
+      arg_mapping:
+        - ["url"]
+        - ["headers"]
+
+  - name: "git_status"
+    description: "Show git repository status"
+    command: "git"
+    args: ["status", "--porcelain"]
+    input_schema:
+      type: object
+      properties:
+        directory:
+          type: string
+          description: "Repository directory (optional)"
+          default: "."
+      arg_mapping:
+        - ["-C"]
+        - ["directory"]

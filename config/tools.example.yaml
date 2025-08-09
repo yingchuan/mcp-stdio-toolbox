@@ -87,3 +87,114 @@ tools:
       arg_mapping:
         - ["-C"]
         - ["directory"]
+
+  - name: "codex_chat"
+    description: "Chat with Codex AI (GPT-5 powered) - stable alternative to experimental MCP"
+    command: "codex"
+    args: ["exec"]
+    timeout_sec: 120
+    input_schema:
+      type: object
+      properties:
+        prompt:
+          type: string
+          description: "Question or task for Codex"
+        model:
+          type: string
+          description: "Model to use (gpt-5, gpt-4, etc)"
+          default: "gpt-5"
+        sandbox:
+          type: string
+          enum: ["read-only", "workspace-write", "danger-full-access"]
+          description: "Sandbox permissions"
+          default: "read-only"
+        approval:
+          type: string
+          enum: ["never", "untrusted", "on-failure", "on-request"]
+          description: "When to ask for approval"
+          default: "never"
+      required: ["prompt"]
+      arg_mapping:
+        - ["-m"]
+        - ["model"] 
+        - ["-s"]
+        - ["sandbox"]
+        - ["-a"]
+        - ["approval"]
+        - ["prompt"]
+
+  - name: "codex_code"
+    description: "Code generation and programming assistance via Codex CLI"
+    command: "codex"
+    args: ["exec"]
+    timeout_sec: 90
+    input_schema:
+      type: object
+      properties:
+        task:
+          type: string
+          description: "Coding task or question"
+        language:
+          type: string
+          description: "Programming language context"
+          default: "python"
+        working_dir:
+          type: string
+          description: "Working directory"
+          default: "."
+      required: ["task"]
+      arg_mapping:
+        - ["-C"]
+        - ["working_dir"]
+        - ["task"]
+
+  - name: "docker_run"
+    description: "Run command in Docker container"
+    command: "docker"
+    args: ["run", "--rm"]
+    timeout_sec: 300
+    input_schema:
+      type: object
+      properties:
+        image:
+          type: string
+          description: "Docker image name"
+        command:
+          type: string
+          description: "Command to run in container"
+        volumes:
+          type: array
+          items:
+            type: string
+          description: "Volume mounts (format: host:container)"
+        environment:
+          type: array
+          items:
+            type: string
+          description: "Environment variables (format: KEY=value)"
+      required: ["image", "command"]
+      arg_mapping:
+        - ["volumes"]
+        - ["environment"]
+        - ["image"]
+        - ["command"]
+
+  - name: "python_exec"
+    description: "Execute Python code safely"
+    command: "python3"
+    args: ["-c"]
+    timeout_sec: 30
+    input_schema:
+      type: object
+      properties:
+        code:
+          type: string
+          description: "Python code to execute"
+        requirements:
+          type: array
+          items:
+            type: string
+          description: "Pip packages to install first"
+      required: ["code"]
+      arg_mapping:
+        - ["code"]

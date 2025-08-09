@@ -32,7 +32,7 @@ class Config:
 
 
 def load_config(config_path: str | Path) -> Config:
-    """Load and validate configuration from YAML file."""
+    """Load configuration from YAML file."""
     config_path = Path(config_path)
     
     if not config_path.exists():
@@ -41,7 +41,6 @@ def load_config(config_path: str | Path) -> Config:
     with open(config_path) as f:
         data = yaml.safe_load(f)
     
-    # Validate structure
     if "tools" not in data:
         raise ValueError("Config must contain 'tools' section")
     
@@ -55,8 +54,9 @@ def load_config(config_path: str | Path) -> Config:
     
     tools = []
     for tool_data in data["tools"]:
-        if not all(k in tool_data for k in ["name", "description", "command", "input_schema"]):
-            raise ValueError(f"Tool missing required fields: {tool_data}")
+        required_fields = ["name", "description", "command", "input_schema"]
+        if not all(k in tool_data for k in required_fields):
+            raise ValueError(f"Tool missing required fields {required_fields}: {tool_data}")
         
         tools.append(ToolConfig(
             name=tool_data["name"],

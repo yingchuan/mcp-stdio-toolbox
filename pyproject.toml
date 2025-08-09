@@ -5,14 +5,33 @@ build-backend = "hatchling.build"
 [project]
 name = "mcp-stdio-toolbox"
 version = "0.1.0"
-description = "A universal MCP server for wrapping CLI tools as MCP tools"
-authors = [{name = "MCP Stdio Toolbox", email = "noreply@example.com"}]
+description = "A universal MCP server for wrapping CLI tools as MCP tools - stable alternative to experimental MCP implementations"
+authors = [
+    {name = "Richard Chen", email = "yingchuan.chen.2007@gmail.com"}
+]
 readme = "README.md"
+license = {file = "LICENSE"}
 requires-python = ">=3.12"
+keywords = [
+    "mcp", "model-context-protocol", "cli-tools", "codex", "gpt", "ai-integration",
+    "claude", "openai", "toolbox", "automation"
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: System :: Shells",
+    "Topic :: Utilities",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
 dependencies = [
     "mcp>=1.0.0",
     "pyyaml>=6.0",
-    "jsonschema>=4.0.0",
     "click>=8.0.0",
 ]
 
@@ -24,12 +43,43 @@ dev = [
     "ruff>=0.1.0",
 ]
 
+[project.urls]
+Homepage = "https://github.com/yingchuan/mcp-stdio-toolbox"
+Repository = "https://github.com/yingchuan/mcp-stdio-toolbox"
+Issues = "https://github.com/yingchuan/mcp-stdio-toolbox/issues"
+Documentation = "https://github.com/yingchuan/mcp-stdio-toolbox#readme"
+
 [project.scripts]
 mcp-stdio-toolbox = "mcp_stdio_toolbox.server:main"
+
+[tool.hatch.version]
+path = "src/mcp_stdio_toolbox/__init__.py"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/mcp_stdio_toolbox"]
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "/src",
+    "/tests",
+    "/config",
+    "/README.md",
+    "/LICENSE",
+    "/pyproject.toml",
+]
 
 [tool.ruff]
 target-version = "py312"
 line-length = 88
+select = [
+    "E",  # pycodestyle errors
+    "W",  # pycodestyle warnings
+    "F",  # pyflakes
+    "I",  # isort
+    "B",  # flake8-bugbear
+    "UP", # pyupgrade
+]
 
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
+testpaths = ["tests"]

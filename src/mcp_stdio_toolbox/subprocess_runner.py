@@ -49,7 +49,7 @@ async def run_command(
         try:
             process.kill()
             await process.wait()
-        except:
+        except Exception:
             pass
         raise TimeoutError(f"Command timed out after {timeout_sec} seconds")
     

@@ -4,7 +4,7 @@ import tempfile
 import pytest
 from pathlib import Path
 
-from mcp_stdio_toolbox.config_loader import load_config, Config, ServerConfig, ToolConfig
+from mcp_stdio_toolbox.config_loader import load_config
 
 
 def test_load_valid_config():

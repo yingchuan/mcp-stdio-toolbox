@@ -2,16 +2,13 @@
 
 import asyncio
 import logging
-from pathlib import Path
-from typing import Any, Sequence
+from typing import Any
 
 import click
 from mcp.server import Server
 from mcp.server.models import InitializationOptions
 from mcp.server.stdio import stdio_server
 from mcp.types import (
-    CallToolRequest,
-    ListToolsRequest,
     TextContent,
     Tool,
 )
@@ -92,6 +89,7 @@ async def serve(config_path: str):
             InitializationOptions(
                 server_name=config.server.name,
                 server_version=config.server.version,
+                capabilities={}
             ),
         )
 
